@@ -128,7 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ListaDoble.h" />
-    <ClInclude Include="ListaSimple.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />

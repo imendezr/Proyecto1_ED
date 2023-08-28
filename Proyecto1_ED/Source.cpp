@@ -1,4 +1,3 @@
-#include "ListaSimple.h"
 #include "ListaDoble.h"
 #include <iostream>
 
@@ -7,26 +6,7 @@ template <typename T>
 void Mostrar(const T&);
 
 int main() {
-	ListaSimple<int> lista;
 	ListaDoble<int> listaD;
-
-	// Simple
-
-	lista.Insertar(43);
-	lista.Insertar(30);
-	lista.Insertar(27);
-
-	Mostrar(lista);
-
-	lista.InsertarInicio(5);
-
-	Mostrar(lista);
-
-	lista.EliminarEnPos(3);
-
-	Mostrar(lista);
-
-	lista.BorrarLista();
 
 	// Doblemente enlazada
 
