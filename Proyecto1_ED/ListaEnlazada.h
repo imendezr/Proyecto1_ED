@@ -1,23 +1,21 @@
-// Descripción: Definición de una lista doblemente enlazada
+// Descripción: Definición de una lista "cuadruplemente" enlazada.
 
-#ifndef LISTADOBLE_H
-#define LISTADOBLE_H
+#ifndef LISTAENLAZADA_H
+#define LISTAENLAZADA_H
 
 #include <iostream>
 #include <cstddef>
 
-// Lista que se construye a partir de nodos autoreferenciados
-// con datos definidos por el usuario
-template<class T> class ListaDoble {
+template<class T> class ListaEnlazada {
 private:
 	// Declaración de cada nodo de la lista: contiene el valor y un apuntador a un nodo
 	// Queda oculto para el usuario
 	struct Nodo {
 		T valor;
-		Nodo* prev;
-		Nodo* next;
+		Nodo* left;
+		Nodo* right;
 		// Constructor del Nodo - asigna NULL si se invoca sin el segundo parámetro
-		Nodo(T val, Nodo* ant = nullptr, Nodo* sig = nullptr) : valor{ val }, prev{ ant }, next { sig } {}
+		Nodo(T val, Nodo* izq = nullptr, Nodo* der = nullptr) : valor{ val }, left{ izq }, right { der } {}
 	};
 
 	// Apuntador al inicio de la lista
@@ -25,7 +23,6 @@ private:
 
 	void Inicializar() { inicio = nullptr; }
 
-	// Interfaz de la Lista Enlazada Simple
 public:
 
 	// Declaración de definición de tipos
@@ -34,26 +31,26 @@ public:
 
 	// Constructores
 	// Default
-	ListaDoble() { Inicializar(); }
+	ListaEnlazada() { Inicializar(); }
 	// Copia
-	explicit ListaDoble(const ListaDoble& obj) {
+	explicit ListaEnlazada(const ListaEnlazada& obj) {
 		if (obj.inicio == nullptr)
 			inicio = nullptr;
 		else {
 			inicio = new Nodo(obj.inicio->valor);
 			listaptr actual = inicio;
-			listaptr actualObj = obj.inicio->next;
+			listaptr actualObj = obj.inicio->right;
 			while (actualObj != nullptr) {
-				actual->next = new Nodo(actualObj->valor); // nodo copiado
-				actual->next->prev = actual; // prev del nodo recien copiado
-				actual = actual->next;
-				actualObj = actualObj->next;
+				actual->right = new Nodo(actualObj->valor); // nodo copiado
+				actual->right->left = actual; // anterior del nodo copiado
+				actual = actual->right;
+				actualObj = actualObj->right;
 			}
 		}
 	}
 
 	// Destructor
-	~ListaDoble() { BorrarLista(); }
+	~ListaEnlazada() { BorrarLista(); }
 
 	// Retorna un apuntador al primer nodo de la lista - modificable
 	listaptr GetPrimerNodo() { return inicio; }
@@ -76,11 +73,11 @@ public:
 			inicio = nuevo;
 		else {
 			listaptr tmp = inicio;
-			while (tmp->next != nullptr) {
-				tmp = tmp->next;
+			while (tmp->right != nullptr) {
+				tmp = tmp->right;
 			}
-			tmp->next = nuevo;
-			nuevo->prev = tmp; // asigno prev del nuevo nodo
+			tmp->right = nuevo;
+			nuevo->left = tmp; // asigno prev del nuevo nodo
 		}
 	}
 
@@ -98,8 +95,8 @@ public:
 		if (inicio == nullptr)
 			inicio = nuevo;
 		else {
-			nuevo->next = inicio;
-			inicio->prev = nuevo; // asigno prev del nodo inicio anterior
+			nuevo->right = inicio;
+			inicio->left = nuevo; // asigno prev del nodo inicio anterior
 			inicio = nuevo;
 		}
 	}
@@ -113,27 +110,27 @@ public:
 
 		// Caso #1: El elemento a borrar es el primero de la lista enlazada
 		if (inicio == puntero) {
-			inicio = inicio->next;
-			if (inicio) inicio->prev = nullptr; // = if (inicio != nullptr). Evita desreferenciar un puntero nulo (si inicio->next es nullptr, entonces nullptr->prev daría error)
+			inicio = inicio->right;
+			if (inicio) inicio->left = nullptr; // = if (inicio != nullptr). Evita desreferenciar un puntero nulo (si inicio->next es nullptr, entonces nullptr->prev daría error)
 			delete puntero;
 		}
 		// Caso #2: El elemento se encuentra en alguna otra posición de la lista
 		else {
 			listaptr tmp = inicio;
-			listaptr tmp2 = tmp->next;
+			listaptr tmp2 = tmp->right;
 			while (tmp2 != nullptr) {
 				if (tmp2 == puntero) {
-					tmp->next = tmp2->next;
+					tmp->right = tmp2->right;
 
-					if (tmp2->next) { // = if (tmp2->next != nullptr). Si el nodo que se elimina no es el último, se ajusta prev del siguiente.
-						tmp2->next->prev = tmp;
+					if (tmp2->right) { // = if (tmp2->next != nullptr). Si el nodo que se elimina no es el último, se ajusta prev del siguiente.
+						tmp2->right->left = tmp;
 					}
 
 					delete tmp2;
 					return;
 				}
 				tmp = tmp2;
-				tmp2 = tmp2->next;
+				tmp2 = tmp2->right;
 			}
 		}
 	}
@@ -145,7 +142,7 @@ public:
 
 		listaptr tmp = inicio;
 		for (std::size_t i = 1; i < pos; ++i) {
-			tmp = tmp->next;
+			tmp = tmp->right;
 			if (tmp == nullptr)
 				return;
 		}
@@ -158,7 +155,7 @@ public:
 		while (tmp != nullptr) {
 			if (tmp->valor == val)
 				return tmp;
-			tmp = tmp->next;
+			tmp = tmp->right;
 		}
 		return nullptr;  // Si no lo encuentra retorna nullptr
 	}
@@ -168,7 +165,7 @@ public:
 		listaptr tmp;
 		while (inicio != nullptr) {
 			tmp = inicio;
-			inicio = inicio->next;
+			inicio = inicio->right;
 			delete tmp;
 		}
 	}
