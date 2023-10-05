@@ -1,56 +1,67 @@
 #include "ListaEnlazada.h"
 #include <iostream>
+#include <vector>
 
 template <typename T>
 void Mostrar(const T&);
 
 int main() {
-    // Crear una instancia de la lista enlazada
-    ListaEnlazada<int> lista;
+	// Crear una instancia de la ListaEnlazada
+	ListaEnlazada<int> lista;
 
-    // Insertar elementos
-    lista.Insertar(1);
-    lista.Insertar(2);
-    lista.Insertar(3);
+	// Insertar una fila en la lista
+	std::vector<int> fila1 = { 1, 2, 3 };
+	std::vector<int> fila2 = { 4, 5, 6 };
+	lista.InsertarFila(fila1);
+	lista.InsertarFila(fila2);
 
-    // Mostrar la lista
-    Mostrar(lista);
+	// Insertar una columna en la lista
+	std::vector<int> columna1 = { 7, 8 };
+	std::vector<int> columna2 = { 9, 10 };
+	lista.InsertarColumna(columna1);
+	lista.InsertarColumna(columna2);
 
-    // Insertar más elementos
-    lista.Insertar(4);
-    lista.Insertar(5);
+	// Mostrar la lista
+	Mostrar(lista);
 
-    // Mostrar la lista nuevamente
-    Mostrar(lista);
+	std::vector<int> fila3 = { 7, 7, 7 , 7};
+	lista.InsertarFila(fila3);
 
-    // Buscar y eliminar un elemento
-    ListaEnlazada<int>::listaptr nodoBuscado = lista.Buscar(2);
-    if (nodoBuscado != nullptr) {
-        lista.Eliminar(nodoBuscado);
-    }
+	// Mostrar la lista
+	Mostrar(lista);
 
-    // Mostrar la lista después de la eliminación
-    Mostrar(lista);
+	// Eliminar una fila y una columna
+	lista.EliminarFila(1); // Eliminar la segunda fila
 
-    // Eliminar un nodo en una posición específica
-    lista.EliminarEnPos(2);
+	// Mostrar la lista
+	Mostrar(lista);
 
-    // Mostrar la lista después de la eliminación por posición
-    Mostrar(lista);
+	lista.EliminarColumna(0); // Eliminar la primera columna
 
-    // Borrar completamente la lista
-    lista.BorrarLista();
+	// Mostrar la lista
+	Mostrar(lista);
 
-    return 0;
+	// Obtener un nodo específico
+	ListaEnlazada<int>::listaptr nodo = lista.ObtenerNodo(0, 1);
+	if (nodo) {
+		std::cout << "Valor en la fila " << 0 + 1 << ", columna " << 1 + 1 << ": " << nodo->valor << std::endl;
+	}
+
+	return 0;
 }
 
 template <typename T>
-void Mostrar(const T& l) {
-	typename T::const_listaptr tmp = l.GetPrimerNodo();
+void Mostrar(const T& lista) {
+	typename T::const_listaptr filaActual = lista.GetPrimerNodo();
 
-	while (tmp != nullptr) {
-		std::cout << tmp->valor << " ";
-		tmp = tmp->right;
+	while (filaActual) {
+		typename T::const_listaptr columnaActual = filaActual;
+		while (columnaActual) {
+			std::cout << columnaActual->valor << " ";
+			columnaActual = columnaActual->right;
+		}
+		std::cout << std::endl;
+		filaActual = filaActual->down;
 	}
 	std::cout << "\n\n";
 }
