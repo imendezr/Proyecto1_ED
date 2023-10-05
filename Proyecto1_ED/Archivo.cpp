@@ -37,5 +37,35 @@ bool Archivo::GuardarArchivo(const std::string& nombreArchivo, const std::vector
 	return true;
 }
 
+bool Archivo::GuardarEstadoJuego(const std::string& nombreArchivo, const Tablero& tablero, int nivelActual, const Repeticion& repeticion) {
+	std::ofstream archivo(nombreArchivo);
+	if (!archivo.is_open()) {
+		return false;
+	}
+
+	// Aquí serializarías el estado del juego. Por ejemplo:
+	// archivo << tablero.Serialize();
+	// archivo << nivelActual;
+	// archivo << repeticion.Serialize();
+
+	archivo.close();
+	return true;
+}
+
+bool Archivo::CargarEstadoJuego(const std::string& nombreArchivo, Tablero& tablero, int& nivelActual, Repeticion& repeticion) {
+	std::ifstream archivo(nombreArchivo);
+	if (!archivo.is_open()) {
+		return false;
+	}
+
+	// Aquí deserializarías el estado del juego. Por ejemplo:
+	// tablero.Deserialize(archivo);
+	// archivo >> nivelActual;
+	// repeticion.Deserialize(archivo);
+
+	archivo.close();
+	return true;
+}
+
 /* Expandir esta clase con funciones adicionales como por ejemplo:
 guardar y cargar el estado del juego(posición del jugador, estado de las cajas, nivel actual, etc.) */

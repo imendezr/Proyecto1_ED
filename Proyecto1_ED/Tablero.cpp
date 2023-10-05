@@ -17,6 +17,10 @@ bool Tablero::PuedeMoverseA(int fila, int columna) {
 bool Tablero::CargarDesdeArchivo(const std::string& nombreArchivo) {
 	auto contenido = Archivo::LeerArchivo(nombreArchivo);
 
+	if (contenido.empty()) {
+		return false; // No se pudo leer el archivo correctamente
+	}
+
 	tablero.BorrarLista(); // Limpia el tablero actual
 	cajas.clear(); // Limpia las cajas actuales
 
@@ -71,16 +75,12 @@ bool Tablero::MoverJugador(char direccion) {
 		nodoAntiguo->valor = ' '; // espacio vacío o el valor que corresponda
 		nodoNuevo->valor = '@'; // símbolo del jugador
 
-		// Registrar el movimiento en el vector movimientos
-		movimientos.push_back(direccion);
-
 		// Actualizar la posición del jugador
 		jugador.SetPosicion(nuevaFila, nuevaColumna);
 		return true;
 	}
-	else if (celdaDestino == '$') {
+	else if (celdaDestino == '$' || celdaDestino == '!') {
 		// Si el jugador está tratando de mover una caja, verifica si puede empujarla
-		// Calcula la posición detrás de la caja basado en la dirección
 		int filaDetrasCaja = nuevaFila + (nuevaFila - jugador.GetFila());
 		int columnaDetrasCaja = nuevaColumna + (nuevaColumna - jugador.GetColumna());
 
@@ -96,21 +96,27 @@ bool Tablero::MoverJugador(char direccion) {
 					break;
 				}
 			}
+
 			// Actualizar los nodos del tablero
 			tablero.ObtenerNodo(nuevaFila, nuevaColumna)->valor = '@';
-			tablero.ObtenerNodo(filaDetrasCaja, columnaDetrasCaja)->valor = '$';
-
-			// Registrar el movimiento en el vector movimientos
-			movimientos.push_back(direccion);
 
 			// Si movemos la caja a su objetivo
 			if (celdaDetrasCaja == '.') {
+				tablero.ObtenerNodo(filaDetrasCaja, columnaDetrasCaja)->valor = '!'; // Representamos caja en objetivo con '!'
 				cajasEnObjetivo.push(Caja(filaDetrasCaja, columnaDetrasCaja));
+			}
+			else {
+				tablero.ObtenerNodo(filaDetrasCaja, columnaDetrasCaja)->valor = '$';
 			}
 
 			// Si sacamos una caja de su objetivo
-			if (tablero.ObtenerNodo(nuevaFila, nuevaColumna)->valor == '!') {
+			if (celdaDestino == '!') {
+				tablero.ObtenerNodo(nuevaFila, nuevaColumna)->valor = '.';
 				cajasEnObjetivo.pop();
+			}
+
+			if (VerificarVictoria()) {
+				// Aquí puedes agregar lógica cuando el jugador gana, por ejemplo, mostrar un mensaje o avanzar al siguiente nivel
 			}
 
 			return true;
@@ -122,9 +128,4 @@ bool Tablero::MoverJugador(char direccion) {
 
 bool Tablero::VerificarVictoria() {
 	return cajasEnObjetivo.size() == cajas.size();
-}
-
-void Tablero::MostrarTablero() {
-	// Esta función mostraría el tablero, útil para la versión de consola
-	// ...
 }

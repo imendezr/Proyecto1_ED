@@ -16,7 +16,6 @@ private:
 	Jugador jugador;
 	std::vector<Caja> cajas;
 	std::stack<Caja> cajasEnObjetivo;
-	std::vector<char> movimientos; // Guarda los movimientos para la repetición
 	int filas, columnas;
 
 	// Funciones auxiliares
@@ -29,7 +28,6 @@ public:
 	bool CargarDesdeArchivo(const std::string& nombreArchivo);
 	bool MoverJugador(char direccion); // 'U' para arriba, 'D' para abajo, 'L' para izquierda, 'R' para derecha
 	bool VerificarVictoria();
-	void MostrarTablero();
 };
 
 #endif
