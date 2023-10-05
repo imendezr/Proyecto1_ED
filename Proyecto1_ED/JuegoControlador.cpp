@@ -47,10 +47,40 @@ bool JuegoControlador::CargarJuego() {
 }
 
 void JuegoControlador::MostrarMenu() {
-	// Mostrar opciones al usuario y manejar su elección
-	vista->MostrarMensaje("Mensaje del menú ...");
-	char entrada = vista->SolicitarEntrada("Ingrese su opción:");
-	ManejarEntrada(entrada);
+	while (true) { // Este bucle permite que el menú se muestre hasta que el jugador elija una opción válida
+		vista->MostrarMensaje("----- Menú de Sokoban -----");
+		vista->MostrarMensaje("1. Iniciar nuevo juego");
+		vista->MostrarMensaje("2. Cargar juego guardado");
+		vista->MostrarMensaje("3. Ver instrucciones");
+		vista->MostrarMensaje("4. Salir");
+		char entrada = vista->SolicitarEntrada("Ingrese su opción:");
+		if (ManejarEntradaMenu(entrada)) {
+			break;
+		}
+	}
+}
+
+bool JuegoControlador::ManejarEntradaMenu(char entrada) {
+	switch (entrada) {
+	case '1':
+		CargarNivel(1); // Inicia el primer nivel
+		return true;
+	case '2':
+		if (!CargarJuego()) {
+			vista->MostrarMensaje("No se pudo cargar el juego.");
+		}
+		return true;
+	case '3':
+		MostrarInstrucciones();
+		return true;
+	case '4':
+		juegoEnProgreso = false; // Termina el juego
+		vista->MostrarMensaje("Gracias por jugar Sokoban. ¡Hasta pronto!");
+		exit(0); // Salir del programa
+	default:
+		vista->MostrarMensaje("Opción no válida. Por favor, intente de nuevo.");
+		return false;
+	}
 }
 
 void JuegoControlador::MostrarInstrucciones() {
