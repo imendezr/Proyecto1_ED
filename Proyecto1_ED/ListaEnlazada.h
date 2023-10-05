@@ -1,4 +1,5 @@
-// Definición de una lista "cuadruplemente" enlazada.
+// Definición de una lista "cuadruplemente" enlazada. ------------------------ RECORDATORIO: SEPARAR LA CLASE EN .H Y .CPP AL FINAL
+#pragma once
 
 #ifndef LISTAENLAZADA_H
 #define LISTAENLAZADA_H

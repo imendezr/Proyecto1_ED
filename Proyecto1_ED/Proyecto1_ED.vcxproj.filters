@@ -18,7 +18,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Sokoban.cpp" />
+    <ClCompile Include="Tablero.cpp">
+      <Filter>Core\Modelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Archivo.cpp">
+      <Filter>Utilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="Jugador.cpp">
+      <Filter>Core\Modelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Caja.cpp">
+      <Filter>Core\Modelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Repeticion.cpp">
+      <Filter>Utilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="JuegoControlador.cpp">
+      <Filter>Core\Controlador</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsolaVista.cpp">
+      <Filter>Vista</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ListaEnlazada.h">
@@ -26,6 +47,27 @@
     </ClInclude>
     <ClInclude Include="Tablero.h">
       <Filter>Core\Modelo</Filter>
+    </ClInclude>
+    <ClInclude Include="Jugador.h">
+      <Filter>Core\Modelo</Filter>
+    </ClInclude>
+    <ClInclude Include="Caja.h">
+      <Filter>Core\Modelo</Filter>
+    </ClInclude>
+    <ClInclude Include="Archivo.h">
+      <Filter>Utilidades</Filter>
+    </ClInclude>
+    <ClInclude Include="Repeticion.h">
+      <Filter>Utilidades</Filter>
+    </ClInclude>
+    <ClInclude Include="JuegoControlador.h">
+      <Filter>Core\Controlador</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsolaVista.h">
+      <Filter>Vista</Filter>
+    </ClInclude>
+    <ClInclude Include="IVista.h">
+      <Filter>Vista</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -127,11 +127,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Archivo.h" />
+    <ClInclude Include="Caja.h" />
+    <ClInclude Include="ConsolaVista.h" />
+    <ClInclude Include="IVista.h" />
+    <ClInclude Include="JuegoControlador.h" />
+    <ClInclude Include="Jugador.h" />
     <ClInclude Include="ListaEnlazada.h" />
+    <ClInclude Include="Repeticion.h" />
     <ClInclude Include="Tablero.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Archivo.cpp" />
+    <ClCompile Include="Caja.cpp" />
+    <ClCompile Include="ConsolaVista.cpp" />
+    <ClCompile Include="JuegoControlador.cpp" />
+    <ClCompile Include="Jugador.cpp" />
+    <ClCompile Include="Sokoban.cpp" />
+    <ClCompile Include="Repeticion.cpp" />
+    <ClCompile Include="Tablero.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
