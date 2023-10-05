@@ -24,5 +24,8 @@
     <ClInclude Include="ListaEnlazada.h">
       <Filter>Core\Modelo</Filter>
     </ClInclude>
+    <ClInclude Include="Tablero.h">
+      <Filter>Core\Modelo</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
