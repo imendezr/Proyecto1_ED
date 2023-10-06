@@ -20,4 +20,32 @@ char ConsolaVista::SolicitarEntrada(const std::string& mensaje) {
 	return entrada;
 }
 
-// Otros métodos y funciones de la clase ConsolaVista, si es necesario
+char ConsolaVista::MostrarMenu() {
+	while (true) {
+		MostrarMensaje("----- Menú de Sokoban -----");
+		MostrarMensaje("1. Iniciar nuevo juego");
+		MostrarMensaje("2. Cargar juego guardado");
+		MostrarMensaje("3. Ver instrucciones");
+		MostrarMensaje("4. Salir");
+		char entrada = SolicitarEntrada("Ingrese su opción:");
+		switch (entrada) {
+		case '1':
+			return 'N';
+		case '2':
+			return 'L';
+		case '3':
+			MostrarInstrucciones();
+			return 'I';
+		case '4':
+			MostrarMensaje("Gracias por jugar Sokoban. ¡Hasta pronto!");
+			return 'Q';
+		default:
+			MostrarMensaje("Opción no válida. Por favor, intente de nuevo.");
+			break;
+		}
+	}
+}
+
+void ConsolaVista::MostrarInstrucciones() {
+	MostrarMensaje("Instrucciones del juego ...");
+}

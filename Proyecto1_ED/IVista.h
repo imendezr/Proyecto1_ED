@@ -12,6 +12,7 @@ public:
 	virtual void MostrarTablero(const Tablero& tablero) = 0;
 	virtual void MostrarMensaje(const std::string& mensaje) = 0;
 	virtual char SolicitarEntrada(const std::string& mensaje) = 0;
+	virtual char MostrarMenu() = 0;
 };
 
 #endif

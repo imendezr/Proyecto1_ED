@@ -7,7 +7,6 @@
 #include "Archivo.h"
 #include "Repeticion.h"
 #include "IVista.h"
-#include "ConsolaVista.h"
 #include <string>
 #include <vector>
 
@@ -23,8 +22,6 @@ private:
 	void CargarNivel(int nivel);
 	void GuardarJuego();
 	bool CargarJuego();
-	void MostrarMenu();
-	bool ManejarEntradaMenu(char entrada);
 	void MostrarInstrucciones();
 	void ManejarEntrada(char entrada);
 	void ReiniciarNivel();

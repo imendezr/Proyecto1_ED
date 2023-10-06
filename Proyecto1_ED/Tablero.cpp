@@ -24,8 +24,17 @@ bool Tablero::CargarDesdeArchivo(const std::string& nombreArchivo) {
 	tablero.BorrarLista(); // Limpia el tablero actual
 	cajas.clear(); // Limpia las cajas actuales
 
+	int longitudLinea = contenido[0].size();
+	int contadorJugador = 0;
+
 	for (int fila = 0; fila < contenido.size(); ++fila) {
 		auto linea = contenido[fila];
+
+		if (linea.size() != longitudLinea) {
+			// Las líneas tienen diferentes longitudes, el archivo no es válido
+			return false;
+		}
+
 		std::vector<char> filaParaTablero;
 
 		for (int columna = 0; columna < linea.size(); ++columna) {
@@ -33,18 +42,28 @@ bool Tablero::CargarDesdeArchivo(const std::string& nombreArchivo) {
 			filaParaTablero.push_back(celda);
 
 			if (celda == '@') {
+				contadorJugador++;
 				jugador.SetPosicion(fila, columna);
 			}
 			else if (celda == '$') {
 				cajas.push_back(Caja(fila, columna));
+			}
+			else if (celda != ' ' && celda != '.' && celda != '#' && celda != '!') {
+				// Carácter inesperado en el tablero
+				return false;
 			}
 		}
 
 		tablero.InsertarFila(filaParaTablero);
 	}
 
+	if (contadorJugador != 1) {
+		// Debe haber exactamente un jugador en el tablero
+		return false;
+	}
+
 	filas = contenido.size();
-	columnas = (contenido.empty()) ? 0 : contenido[0].size();
+	columnas = longitudLinea;
 
 	return true;
 }

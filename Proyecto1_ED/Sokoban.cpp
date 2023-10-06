@@ -1,4 +1,5 @@
 #include "ListaEnlazada.h"
+#include "JuegoControlador.h"
 #include <iostream>
 #include <vector>
 
@@ -6,6 +7,10 @@ template <typename T>
 void Mostrar(const T&);
 
 int main() {
+	// JuegoControlador controlador;
+	// controlador.IniciarJuego();
+
+
 	// Crear una instancia de la ListaEnlazada
 	ListaEnlazada<int> lista;
 
