@@ -9,10 +9,10 @@ class IVista {
 public:
 	virtual ~IVista() = default;
 
-	virtual void MostrarTablero(const Tablero& tablero) = 0;
-	virtual void MostrarMensaje(const std::string& mensaje) = 0;
-	virtual char SolicitarEntrada(const std::string& mensaje) = 0;
-	virtual char MostrarMenu() = 0;
+	virtual void mostrarTablero(const Tablero&) = 0;
+	virtual void mostrarMensaje(const std::string&) = 0;
+	virtual char solicitarEntrada(const std::string&) = 0;
+	virtual char mostrarMenu() = 0;
 };
 
 #endif

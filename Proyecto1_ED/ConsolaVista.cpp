@@ -1,51 +1,114 @@
 #include "ConsolaVista.h"
+#include <iostream>
+#include <Windows.h>
+#include <wincon.h>
+#include <conio.h>
 
-// Implementación de los métodos de la clase ConsolaVista
 ConsolaVista::ConsolaVista() {
 	// Constructor si es necesario
 }
 
-void ConsolaVista::MostrarTablero(const Tablero& tablero) {
-	// Implementación específica de cómo mostrar el tablero en la consola
+void ConsolaVista::mostrarTablero(const Tablero& tablero) {
+	system("cls");  // Limpia la consola
+
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD coord = { 0, 0 };
+	SetConsoleCursorPosition(hConsole, coord); // Se establece el cursor en la esquina superior izquierda para mejor visualización
+
+	for (int fila = 0; fila < tablero.getFilas(); ++fila) {
+		for (int columna = 0; columna < tablero.getColumnas(); ++columna) {
+			char celda = tablero.getTablero().obtenerNodo(fila, columna)->valor;
+			switch (celda) {
+			case '@': // Jugador
+				SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+				std::cout << celda;
+				break;
+			case '#': // Pared
+				SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
+				std::cout << celda;
+				break;
+			case '$': // Caja
+				SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+				std::cout << celda;
+				break;
+			case '.': // Objetivo
+				SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+				std::cout << celda;
+				break;
+			case '!': // Caja en objetivo
+				SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+				std::cout << celda;
+				break;
+			default:
+				SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+				std::cout << celda;
+				break;
+			}
+		}
+		std::cout << std::endl;
+	}
+	SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Restablece el color normal
 }
 
-void ConsolaVista::MostrarMensaje(const std::string& mensaje) {
-	// Implementación específica de cómo mostrar un mensaje en la consola
+void ConsolaVista::mostrarMensaje(const std::string& mensaje) {
+	std::cout << mensaje << "\n";
 }
 
-char ConsolaVista::SolicitarEntrada(const std::string& mensaje) {
-	// Implementación específica de cómo solicitar entrada al usuario en la consola
-	char entrada = ' ';
-	// Código para leer la entrada del usuario
-	return entrada;
+char ConsolaVista::solicitarEntrada(const std::string& mensaje) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	std::cout << mensaje;
+
+	int entrada = _getch();
+
+	// Si la entrada es una tecla de flecha o tecla especial
+	if (entrada == 224 || entrada == 0xE0) {
+		entrada = _getch();
+		switch (entrada) {
+		case 72: return 'U';  // Flecha arriba
+		case 80: return 'D';  // Flecha abajo
+		case 75: return 'L';  // Flecha izquierda
+		case 77: return 'R';  // Flecha derecha
+		}
+	}
+	else {
+		switch (toupper(entrada)) {
+		case 'W': return 'U';
+		case 'A': return 'L';
+		case 'S': return 'D';
+		case 'D': return 'R';
+		default: return char(entrada);
+		}
+	}
+	return char(entrada);
 }
 
-char ConsolaVista::MostrarMenu() {
+char ConsolaVista::mostrarMenu() {
 	while (true) {
-		MostrarMensaje("----- Menú de Sokoban -----");
-		MostrarMensaje("1. Iniciar nuevo juego");
-		MostrarMensaje("2. Cargar juego guardado");
-		MostrarMensaje("3. Ver instrucciones");
-		MostrarMensaje("4. Salir");
-		char entrada = SolicitarEntrada("Ingrese su opción:");
+		mostrarMensaje("----- Menú de Sokoban -----");
+		mostrarMensaje("1. Iniciar nuevo juego");
+		mostrarMensaje("2. Cargar juego guardado");
+		mostrarMensaje("3. Ver instrucciones");
+		mostrarMensaje("4. Salir");
+		char entrada = solicitarEntrada("Ingrese su opción:");
 		switch (entrada) {
 		case '1':
 			return 'N';
 		case '2':
 			return 'L';
 		case '3':
-			MostrarInstrucciones();
-			return 'I';
+			mostrarInstrucciones();
+			break;
+			//return 'I';
 		case '4':
-			MostrarMensaje("Gracias por jugar Sokoban. ¡Hasta pronto!");
+			mostrarMensaje("Gracias por jugar Sokoban. ¡Hasta pronto!");
 			return 'Q';
 		default:
-			MostrarMensaje("Opción no válida. Por favor, intente de nuevo.");
+			mostrarMensaje("Opción no válida. Por favor, intente de nuevo.");
 			break;
 		}
 	}
 }
 
-void ConsolaVista::MostrarInstrucciones() {
-	MostrarMensaje("Instrucciones del juego ...");
+void ConsolaVista::mostrarInstrucciones() {
+	mostrarMensaje("Instrucciones del juego ...");
 }

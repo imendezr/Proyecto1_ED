@@ -1,13 +1,13 @@
 #include "Repeticion.h"
 
-void Repeticion::RegistrarMovimiento(char direccion) {
+void Repeticion::registrarMovimiento(char direccion) {
 	movimientos.push_back(direccion);
 }
 
-const std::vector<char>& Repeticion::ObtenerMovimientos() const {
+const std::vector<char>& Repeticion::obtenerMovimientos() const {
 	return movimientos;
 }
 
-void Repeticion::LimpiarMovimientos() {
+void Repeticion::limpiarMovimientos() {
 	movimientos.clear();
 }

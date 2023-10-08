@@ -10,10 +10,10 @@
 
 class Archivo {
 public:
-	static std::vector<std::string> LeerArchivo(const std::string& nombreArchivo);
-	static bool GuardarArchivo(const std::string& nombreArchivo, const std::vector<std::string>& contenido);
-	static bool GuardarEstadoJuego(const std::string& nombreArchivo, const Tablero& tablero, int nivelActual, const Repeticion& repeticion);
-	static bool CargarEstadoJuego(const std::string& nombreArchivo, Tablero& tablero, int& nivelActual, Repeticion& repeticion);
+	static std::vector<std::string> leerArchivo(const std::string&);
+	static bool guardarArchivo(const std::string&, const std::vector<std::string>&);
+	static bool guardarEstadoJuego(const std::string&, const Tablero&, int, const Repeticion&);
+	static bool cargarEstadoJuego(const std::string&, Tablero&, int&, Repeticion&);
 };
 
 #endif

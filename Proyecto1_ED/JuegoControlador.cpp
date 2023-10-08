@@ -14,56 +14,72 @@ JuegoControlador::~JuegoControlador() {
 }
 
 void JuegoControlador::IniciarJuego() {
-	char opcion = vista->MostrarMenu();
+	while (true) {  // Bucle principal del juego
+		char opcion = vista->mostrarMenu();
 
-	switch (opcion) {
-	case 'N':
-		CargarNivel(1);
-		break;
-	case 'L':
-		CargarJuego();
-		break;
-	case 'I':
-		// Las instrucciones ya fueron mostradas en la vista
-		break;
-	case 'Q':
-		exit(0);
-		break;
+		switch (opcion) {
+		case 'N':
+			CargarNivel(1);
+			break;
+		case 'L':
+			CargarJuego();
+			break;
+		case 'I':
+			// Las instrucciones ya fueron mostradas en la vista
+			continue;  // Continúa con la siguiente iteración del bucle para volver al menú
+		case 'Q':
+			exit(0);
+			break;
+		}
+
+		while (juegoEnProgreso) {
+			vista->mostrarTablero(tableroActual);
+			char entrada = vista->solicitarEntrada("Mueve con las flechas o Q para salir: ");
+			switch (entrada) {
+			case 'Q':
+			case 'q':
+				juegoEnProgreso = false;
+				break;
+			default:
+				ManejarEntrada(entrada);
+				break;
+			}
+		}
 	}
 }
 
 void JuegoControlador::CargarNivel(int nivel) {
-	if (nivel <= niveles.size() && tableroActual.CargarDesdeArchivo(niveles[nivel - 1])) {
+	if (nivel <= niveles.size() && tableroActual.cargarDesdeArchivo(niveles[nivel - 1])) {
 		nivelActual = nivel;
 		juegoEnProgreso = true;
 	}
 	else {
-		vista->MostrarMensaje("Error al cargar el nivel.");
+		vista->mostrarMensaje("Error al cargar el nivel.");
 	}
 }
 
 void JuegoControlador::GuardarJuego() {
-	if (Archivo::GuardarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
-		vista->MostrarMensaje("Juego guardado con éxito.");
+	if (Archivo::guardarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
+		vista->mostrarMensaje("Juego guardado con éxito.");
 	}
 	else {
-		vista->MostrarMensaje("Error al guardar el juego.");
+		vista->mostrarMensaje("Error al guardar el juego.");
 	}
 }
 
 bool JuegoControlador::CargarJuego() {
-	if (Archivo::CargarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
-		vista->MostrarMensaje("Juego cargado con éxito.");
+	if (Archivo::cargarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
+		vista->mostrarMensaje("Juego cargado con éxito.");
 		return true;
 	}
 	else {
-		vista->MostrarMensaje("Error al cargar el juego.");
+		vista->mostrarMensaje("Error al cargar el juego.");
 		return false;
 	}
 }
 
-void JuegoControlador::MostrarInstrucciones() {
-	vista->MostrarMensaje("Instrucciones del juego ...");
+void JuegoControlador::mostrarInstrucciones() {
+	vista->mostrarMensaje("Instrucciones del juego ...");
 }
 
 void JuegoControlador::ManejarEntrada(char entrada) {
@@ -76,7 +92,7 @@ void JuegoControlador::ManejarEntrada(char entrada) {
 	case 'D':
 	case 'L':
 	case 'R':
-		movimientoValido = tableroActual.MoverJugador(entrada);
+		movimientoValido = tableroActual.moverJugador(entrada);
 		break;
 		// Puedes agregar otros casos para otras entradas, como seleccionar opciones en el menú, etc.
 	default:
@@ -84,7 +100,7 @@ void JuegoControlador::ManejarEntrada(char entrada) {
 	}
 
 	if (movimientoValido) {
-		repeticion.RegistrarMovimiento(entrada); // Registrar el movimiento en Repeticion
+		repeticion.registrarMovimiento(entrada); // Registrar el movimiento en Repeticion
 	}
 }
 
@@ -93,14 +109,14 @@ void JuegoControlador::ReiniciarNivel() {
 }
 
 void JuegoControlador::MostrarRepeticion() {
-	const auto& movimientos = repeticion.ObtenerMovimientos();
+	const auto& movimientos = repeticion.obtenerMovimientos();
 
 	// Cargamos el nivel inicial para comenzar la repetición desde el inicio
 	CargarNivel(nivelActual);
 
 	for (char movimiento : movimientos) {
-		tableroActual.MoverJugador(movimiento);
-		vista->MostrarTablero(tableroActual); // Mostrar el tablero después de cada movimiento
+		tableroActual.moverJugador(movimiento);
+		vista->mostrarTablero(tableroActual); // Mostrar el tablero después de cada movimiento
 	}
 }
 
@@ -109,7 +125,7 @@ void JuegoControlador::AvanzarAlSiguienteNivel() {
 		CargarNivel(nivelActual + 1);
 	}
 	else {
-		vista->MostrarMensaje("¡Felicidades! Has completado todos los niveles.");
+		vista->mostrarMensaje("¡Felicidades! Has completado todos los niveles.");
 		juegoEnProgreso = false;
 	}
 }

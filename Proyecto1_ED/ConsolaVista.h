@@ -9,11 +9,11 @@ class ConsolaVista : public IVista {
 public:
 	ConsolaVista();
 
-	void MostrarTablero(const Tablero& tablero) override;
-	void MostrarMensaje(const std::string& mensaje) override;
-	char SolicitarEntrada(const std::string& mensaje) override;
-	char MostrarMenu() override;
-	void MostrarInstrucciones();
+	void mostrarTablero(const Tablero&) override;
+	void mostrarMensaje(const std::string&) override;
+	char solicitarEntrada(const std::string&) override;
+	char mostrarMenu() override;
+	void mostrarInstrucciones();
 };
 
 #endif

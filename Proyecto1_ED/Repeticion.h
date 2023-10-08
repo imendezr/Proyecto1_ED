@@ -7,12 +7,12 @@
 
 class Repeticion {
 private:
-	std::vector<char> movimientos; // Guarda los movimientos para la repetición
+	std::vector<char> movimientos;
 
 public:
-	void RegistrarMovimiento(char direccion);
-	const std::vector<char>& ObtenerMovimientos() const;
-	void LimpiarMovimientos();
+	void registrarMovimiento(char);
+	const std::vector<char>& obtenerMovimientos() const;
+	void limpiarMovimientos();
 };
 
 #endif

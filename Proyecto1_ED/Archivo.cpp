@@ -1,7 +1,7 @@
 #include "Archivo.h"
 #include <fstream>
 
-std::vector<std::string> Archivo::LeerArchivo(const std::string& nombreArchivo) {
+std::vector<std::string> Archivo::leerArchivo(const std::string& nombreArchivo) {
 	std::vector<std::string> contenido;
 	std::ifstream archivo(nombreArchivo); // Abre el archivo en modo lectura
 
@@ -12,7 +12,7 @@ std::vector<std::string> Archivo::LeerArchivo(const std::string& nombreArchivo) 
 
 	std::string linea;
 	while (getline(archivo, linea)) {
-		// Lee cada línea y la agrega al vector contenido
+		// Lee cada línea y la agrega al vector
 		contenido.push_back(linea);
 	}
 
@@ -20,11 +20,11 @@ std::vector<std::string> Archivo::LeerArchivo(const std::string& nombreArchivo) 
 	return contenido;
 }
 
-bool Archivo::GuardarArchivo(const std::string& nombreArchivo, const std::vector<std::string>& contenido) {
+bool Archivo::guardarArchivo(const std::string& nombreArchivo, const std::vector<std::string>& contenido) {
 	std::ofstream archivo(nombreArchivo); // Abre el archivo en modo escritura
 
 	if (!archivo.is_open()) {
-		// Si el archivo no se pudo abrir, retorna false
+		// Si el archivo no se pudo abrir
 		return false;
 	}
 
@@ -37,7 +37,7 @@ bool Archivo::GuardarArchivo(const std::string& nombreArchivo, const std::vector
 	return true;
 }
 
-bool Archivo::GuardarEstadoJuego(const std::string& nombreArchivo, const Tablero& tablero, int nivelActual, const Repeticion& repeticion) {
+bool Archivo::guardarEstadoJuego(const std::string& nombreArchivo, const Tablero& tablero, int nivelActual, const Repeticion& repeticion) {
 	std::ofstream archivo(nombreArchivo);
 	if (!archivo.is_open()) {
 		return false;
@@ -52,7 +52,7 @@ bool Archivo::GuardarEstadoJuego(const std::string& nombreArchivo, const Tablero
 	return true;
 }
 
-bool Archivo::CargarEstadoJuego(const std::string& nombreArchivo, Tablero& tablero, int& nivelActual, Repeticion& repeticion) {
+bool Archivo::cargarEstadoJuego(const std::string& nombreArchivo, Tablero& tablero, int& nivelActual, Repeticion& repeticion) {
 	std::ifstream archivo(nombreArchivo);
 	if (!archivo.is_open()) {
 		return false;

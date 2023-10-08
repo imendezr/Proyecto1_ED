@@ -70,4 +70,9 @@
       <Filter>Vista</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ListaEnlazada.hpp">
+      <Filter>Core\Modelo</Filter>
+    </None>
+  </ItemGroup>
 </Project>

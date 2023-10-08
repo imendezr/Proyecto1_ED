@@ -22,7 +22,7 @@ private:
 	void CargarNivel(int nivel);
 	void GuardarJuego();
 	bool CargarJuego();
-	void MostrarInstrucciones();
+	void mostrarInstrucciones();
 	void ManejarEntrada(char entrada);
 	void ReiniciarNivel();
 	void MostrarRepeticion();

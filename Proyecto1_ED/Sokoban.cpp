@@ -7,51 +7,57 @@ template <typename T>
 void Mostrar(const T&);
 
 int main() {
-	// JuegoControlador controlador;
-	// controlador.IniciarJuego();
+	JuegoControlador controlador;
+	controlador.IniciarJuego();
 
+    /*//  -------------------------------------------------------------- PRUEBAS LISTA ENLAZADA --------------------------------------------------------------
+    // Crear una instancia original de ListaEnlazada
+    ListaEnlazada<int> listaOriginal;
 
-	// Crear una instancia de la ListaEnlazada
-	ListaEnlazada<int> lista;
+    // Insertar una fila en la lista original
+    std::vector<int> fila1 = { 1, 2, 3 };
+    std::vector<int> fila2 = { 4, 5, 6 };
+    listaOriginal.InsertarFila(fila1);
+    listaOriginal.InsertarFila(fila2);
 
-	// Insertar una fila en la lista
-	std::vector<int> fila1 = { 1, 2, 3 };
-	std::vector<int> fila2 = { 4, 5, 6 };
-	lista.InsertarFila(fila1);
-	lista.InsertarFila(fila2);
+    // Insertar una columna en la lista original
+    std::vector<int> columna1 = { 7, 8 };
+    std::vector<int> columna2 = { 9, 10 };
+    listaOriginal.InsertarColumna(columna1);
+    listaOriginal.InsertarColumna(columna2);
 
-	// Insertar una columna en la lista
-	std::vector<int> columna1 = { 7, 8 };
-	std::vector<int> columna2 = { 9, 10 };
-	lista.InsertarColumna(columna1);
-	lista.InsertarColumna(columna2);
+    // Mostrar la lista original
+    std::cout << "Lista Original:" << std::endl;
+    Mostrar(listaOriginal);
 
-	// Mostrar la lista
-	Mostrar(lista);
+    // Crear una nueva instancia utilizando el constructor de copia
+    ListaEnlazada<int> listaCopia(listaOriginal);
 
-	std::vector<int> fila3 = { 7, 7, 7 , 7};
-	lista.InsertarFila(fila3);
+    // Mostrar la lista copiada
+    std::cout << "Lista Copiada:" << std::endl;
+    Mostrar(listaCopia);
 
-	// Mostrar la lista
-	Mostrar(lista);
+    // Realizar algunas operaciones en la lista copiada
+    std::vector<int> fila3 = { 7, 7, 7, 7 };
+    listaCopia.InsertarFila(fila3);
 
-	// Eliminar una fila y una columna
-	lista.EliminarFila(1); // Eliminar la segunda fila
+    // Mostrar la lista copiada después de la operación
+    std::cout << "Lista Copiada despues de Insertar Fila:" << std::endl;
+    Mostrar(listaCopia);
 
-	// Mostrar la lista
-	Mostrar(lista);
+    // Eliminar una fila en la lista copiada
+    listaCopia.EliminarFila(1);
 
-	lista.EliminarColumna(0); // Eliminar la primera columna
+    // Mostrar la lista copiada después de eliminar una fila
+    std::cout << "Lista Copiada despues de Eliminar Fila:" << std::endl;
+    Mostrar(listaCopia);
 
-	// Mostrar la lista
-	Mostrar(lista);
+    // Verificar que la lista original no se haya modificado
+    std::cout << "Lista Original despues de operaciones en la copia:" << std::endl;
+    Mostrar(listaOriginal);
 
-	// Obtener un nodo específico
-	ListaEnlazada<int>::listaptr nodo = lista.ObtenerNodo(0, 1);
-	if (nodo) {
-		std::cout << "Valor en la fila " << 0 + 1 << ", columna " << 1 + 1 << ": " << nodo->valor << std::endl;
-	}
-
+    //  -------------------------------------------------------------- PRUEBAS LISTA ENLAZADA --------------------------------------------------------------
+    */
 	return 0;
 }
 

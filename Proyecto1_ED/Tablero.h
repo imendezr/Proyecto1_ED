@@ -18,16 +18,19 @@ private:
 	std::stack<Caja> cajasEnObjetivo;
 	int filas, columnas;
 
-	// Funciones auxiliares
-	bool EsPosicionValida(int fila, int columna);
-	bool PuedeMoverseA(int fila, int columna);
+	bool esPosicionValida(int, int);
+	bool puedeMoverseA(int, int);
 
 public:
 	Tablero();
 
-	bool CargarDesdeArchivo(const std::string& nombreArchivo);
-	bool MoverJugador(char direccion); // 'U' para arriba, 'D' para abajo, 'L' para izquierda, 'R' para derecha
-	bool VerificarVictoria();
+	ListaEnlazada<char> getTablero() const;
+	int getFilas() const;
+	int getColumnas() const;
+
+	bool cargarDesdeArchivo(const std::string&);
+	bool moverJugador(char); // 'U' para arriba (up), 'D' para abajo (down), 'L' para la izquierda (left), 'R' para la derecha (right)
+	bool verificarVictoria();
 };
 
 #endif

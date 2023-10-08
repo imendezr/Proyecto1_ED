@@ -7,16 +7,18 @@ class Caja {
 private:
 	int fila;
 	int columna;
+	char celdaPrevia;
 
 public:
-	// Constructor
-	Caja(int filaInicial, int columnaInicial);
+	Caja(int, int);
 
-	// Métodos getter y setter
-	int GetFila() const;
-	int GetColumna() const;
+	int getFila() const;
+	int getColumna() const;
 
-	void SetPosicion(int nuevaFila, int nuevaColumna);
+	char getCeldaPrevia() const;
+	void setCeldaPrevia(char);
+
+	void setPosicion(int, int);
 };
 
 #endif
