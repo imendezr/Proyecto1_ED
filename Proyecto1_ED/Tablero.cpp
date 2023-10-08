@@ -213,7 +213,9 @@ std::string Tablero::serializar() const {
 		}
 		serializado += "\n";
 	}
-	serializado += std::to_string(jugador.getFila()) + "," + std::to_string(jugador.getColumna()) + "\n";
+
+	// Serializar posición y celda previa del jugador
+	serializado += std::to_string(jugador.getFila()) + "," + std::to_string(jugador.getColumna()) + "," + jugador.getCeldaPrevia() + "\n";
 
 	// Serializando las cajas:
 	serializado += std::to_string(cajas.size()) + "\n";  // número de cajas
@@ -253,7 +255,7 @@ void Tablero::deserializar(const std::string& datos) {
 		tablero.insertarFila(filaParaTablero);
 	}
 
-	// Leer posición del jugador
+	// Leer posición del jugador y su celda previa
 	std::getline(ss, linea);
 	lineSS.str(linea);
 	lineSS.clear();
@@ -261,7 +263,10 @@ void Tablero::deserializar(const std::string& datos) {
 	int jugadorFila = std::stoi(token);
 	std::getline(lineSS, token, ',');
 	int jugadorColumna = std::stoi(token);
+	std::getline(lineSS, token, ',');
+	char jugadorCeldaPrevia = token[0];
 	jugador.setPosicion(jugadorFila, jugadorColumna);
+	jugador.setCeldaPrevia(jugadorCeldaPrevia);
 
 	// Leer cajas
 	cajas.clear();
