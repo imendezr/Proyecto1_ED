@@ -76,8 +76,8 @@ ListaEnlazada<T>::ListaEnlazada(const ListaEnlazada& obj) {
 template<class T>
 ListaEnlazada<T>::~ListaEnlazada() {
 	borrarLista();
-	filas = 0;
-	columnas = 0;
+	//filas = 0;
+	//columnas = 0;
 }
 
 // Retorna un apuntador al primer nodo de la lista - modificable
@@ -388,4 +388,6 @@ void ListaEnlazada<T>::borrarLista() {
 	}
 
 	inicio = nullptr;
+	filas = 0;   // Restablecer el conteo de filas
+	columnas = 0;  // Restablecer el conteo de columnas
 }
