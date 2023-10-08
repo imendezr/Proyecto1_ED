@@ -3,7 +3,7 @@
 #include <iostream>
 #include <thread>
 
-JuegoControlador::JuegoControlador() : nivelActual(1), juegoEnProgreso(false), vista(new ConsolaVista()) {
+JuegoControlador::JuegoControlador() : nivelActual(1), juegoEnProgreso(false), esperandoRespuesta(false), vista(new ConsolaVista()) {
 	// Inicializar la lista de niveles
 	niveles.push_back("nivel1.txt");
 	niveles.push_back("nivel2.txt");
@@ -14,16 +14,16 @@ JuegoControlador::~JuegoControlador() {
 	delete vista;
 }
 
-void JuegoControlador::IniciarJuego() {
+void JuegoControlador::iniciarJuego() {
 	while (true) {
 		char opcion = vista->mostrarMenu();
 
 		switch (opcion) {
 		case 'N':
-			CargarNivel(1);
+			cargarNivel(1);
 			break;
 		case 'L':
-			CargarJuego();
+			cargarJuego();
 			break;
 		case 'I':
 			// Las instrucciones ya fueron mostradas en la vista
@@ -36,29 +36,31 @@ void JuegoControlador::IniciarJuego() {
 		while (juegoEnProgreso) {
 			vista->mostrarTablero(tableroActual);
 			char entrada = vista->solicitarEntrada("Presiona Z para reiniciar el nivel, G para guardar la partida o Q para salir: ");
+			if (esperandoRespuesta) {
+				continue; // Si estamos esperando una respuesta, no procesamos la entrada y volvemos al inicio del loop
+			}
 			switch (entrada) {
 			case 'G':
 			case 'g':
-				GuardarJuego();
+				guardarJuego();
 				break;
 			case 'Z':
 			case 'z':
-				ReiniciarNivel();
+				reiniciarNivel();
 				break;
 			case 'Q':
 			case 'q':
 				juegoEnProgreso = false;
 				break;
 			default:
-				ManejarEntrada(entrada);
+				manejarEntrada(entrada);
 				break;
 			}
-
 		}
 	}
 }
 
-void JuegoControlador::CargarNivel(int nivel) {
+void JuegoControlador::cargarNivel(int nivel) {
 	if (nivel <= niveles.size() && tableroActual.cargarDesdeArchivo(niveles[nivel - 1])) {
 		nivelActual = nivel;
 		juegoEnProgreso = true;
@@ -68,7 +70,7 @@ void JuegoControlador::CargarNivel(int nivel) {
 	}
 }
 
-void JuegoControlador::GuardarJuego() {
+void JuegoControlador::guardarJuego() {
 	if (Archivo::guardarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
 		vista->mostrarMensaje("Juego guardado con éxito.");
 	}
@@ -77,7 +79,7 @@ void JuegoControlador::GuardarJuego() {
 	}
 }
 
-bool JuegoControlador::CargarJuego() {
+bool JuegoControlador::cargarJuego() {
 	if (Archivo::cargarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
 		vista->mostrarMensaje("Juego cargado con éxito.");
 		juegoEnProgreso = true; // Reanudar juego
@@ -93,8 +95,10 @@ void JuegoControlador::mostrarInstrucciones() {
 	vista->mostrarMensaje("Instrucciones del juego ...");
 }
 
-void JuegoControlador::ManejarEntrada(char entrada) {
-	// Lógica de manejo de entrada...
+void JuegoControlador::manejarEntrada(char entrada) {
+	if (esperandoRespuesta) {
+		return;  // No procesar la entrada si se está esperando una respuesta
+	}
 
 	bool movimientoValido = false;
 
@@ -111,29 +115,49 @@ void JuegoControlador::ManejarEntrada(char entrada) {
 	}
 
 	if (movimientoValido) {
-		repeticion.registrarMovimiento(entrada); // Registrar el movimiento en Repeticion
+		repeticion.registrarMovimiento(entrada);
 		if (tableroActual.verificarVictoria()) {
+			vista->mostrarTablero(tableroActual);
 			nivelCompletado();
 		}
 	}
 }
 
 void JuegoControlador::nivelCompletado() {
+	esperandoRespuesta = true;
 	vista->mostrarMensaje("¡Nivel completado!");
-	// Puedes agregar un pequeño delay aquí para que el jugador pueda ver el mensaje
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-	AvanzarAlSiguienteNivel();
+
+	char entrada;
+	do {
+		entrada = vista->solicitarEntrada("Presiona V para ver la repetición o C para continuar al siguiente nivel: ");
+	} while (entrada != 'V' && entrada != 'v' && entrada != 'C' && entrada != 'c');
+
+	switch (entrada) {
+	case 'V':
+	case 'v':
+		mostrarRepeticion();
+		// Luego de ver la repetición, se le da la opción de continuar al siguiente nivel.
+		vista->solicitarEntrada("Presiona C para continuar al siguiente nivel: ");
+		avanzarAlSiguienteNivel();
+		break;
+	case 'C':
+	case 'c':
+		avanzarAlSiguienteNivel();
+		break;
+	}
+
+	esperandoRespuesta = false;
 }
 
-void JuegoControlador::ReiniciarNivel() {
-	CargarNivel(nivelActual);
+void JuegoControlador::reiniciarNivel() {
+	cargarNivel(nivelActual);
 }
 
-void JuegoControlador::MostrarRepeticion() {
+void JuegoControlador::mostrarRepeticion() {
 	const auto& movimientos = repeticion.obtenerMovimientos();
 
 	// Se carga el nivel de nuevo para comenzar la repetición desde el inicio
-	CargarNivel(nivelActual);
+	cargarNivel(nivelActual);
 
 	for (char movimiento : movimientos) {
 		tableroActual.moverJugador(movimiento);
@@ -142,9 +166,9 @@ void JuegoControlador::MostrarRepeticion() {
 	}
 }
 
-void JuegoControlador::AvanzarAlSiguienteNivel() {
+void JuegoControlador::avanzarAlSiguienteNivel() {
 	if (nivelActual < niveles.size()) {
-		CargarNivel(nivelActual + 1);
+		cargarNivel(nivelActual + 1);
 	}
 	else {
 		vista->mostrarMensaje("¡Felicidades! Has completado todos los niveles.");

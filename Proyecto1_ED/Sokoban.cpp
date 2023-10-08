@@ -8,7 +8,7 @@ void Mostrar(const T&);
 
 int main() {
 	JuegoControlador controlador;
-	controlador.IniciarJuego();
+	controlador.iniciarJuego();
 
     /*//  -------------------------------------------------------------- PRUEBAS LISTA ENLAZADA --------------------------------------------------------------
     // Crear una instancia original de ListaEnlazada
@@ -61,7 +61,7 @@ int main() {
 	return 0;
 }
 
-template <typename T>
+/*template <typename T>
 void Mostrar(const T& lista) {
 	typename T::const_listaptr filaActual = lista.GetPrimerNodo();
 
@@ -75,4 +75,4 @@ void Mostrar(const T& lista) {
 		filaActual = filaActual->down;
 	}
 	std::cout << "\n\n";
-}
+}*/

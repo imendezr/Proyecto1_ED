@@ -15,24 +15,25 @@ private:
 	Tablero tableroActual;
 	int nivelActual;
 	bool juegoEnProgreso;
+	bool esperandoRespuesta;
 	std::vector<std::string> niveles;
 	Repeticion repeticion;
 	IVista* vista;
 
-	void CargarNivel(int nivel);
-	void GuardarJuego();
-	bool CargarJuego();
+	void cargarNivel(int nivel);
+	void guardarJuego();
+	bool cargarJuego();
 	void mostrarInstrucciones();
-	void ManejarEntrada(char entrada);
+	void manejarEntrada(char entrada);
 	void nivelCompletado();
-	void ReiniciarNivel();
-	void MostrarRepeticion();
-	void AvanzarAlSiguienteNivel();
+	void reiniciarNivel();
+	void mostrarRepeticion();
+	void avanzarAlSiguienteNivel();
 
 public:
 	JuegoControlador();
 	~JuegoControlador();
-	void IniciarJuego();
+	void iniciarJuego();
 };
 
 #endif

@@ -14,28 +14,28 @@ void Repeticion::limpiarMovimientos() {
 }
 
 std::string Repeticion::serializar() const {
-    std::string serialized = "REPETICION_START\n";  // Identificador de inicio
+    std::string serializado = "REPETICION_START\n";  // Identificador de inicio
     for (char movimiento : movimientos) {
-        serialized += movimiento;
+        serializado += movimiento;
     }
-    serialized += "\nREPETICION_END\n";  // Identificador de finalización
-    return serialized;
+    serializado += "\nREPETICION_END\n";  // Identificador de finalización
+    return serializado;
 }
 
 void Repeticion::deserializar(const std::string& datos) {
     std::istringstream ss(datos);
-    std::string line;
+    std::string linea;
 
-    if (!std::getline(ss, line) || line != "REPETICION_START") {
+    if (!std::getline(ss, linea) || linea != "REPETICION_START") {
         throw std::runtime_error("Datos de repetición no válidos: falta REPETICION_START.");
     }
 
-    if (!std::getline(ss, line)) {
+    if (!std::getline(ss, linea)) {
         throw std::runtime_error("Datos de repetición no válidos: falta la secuencia de movimientos.");
     }
 
     movimientos.clear();
-    for (char movimiento : line) {
+    for (char movimiento : linea) {
         if (movimiento == 'U' || movimiento == 'D' || movimiento == 'L' || movimiento == 'R') {
             movimientos.push_back(movimiento);
         }
@@ -44,7 +44,7 @@ void Repeticion::deserializar(const std::string& datos) {
         }
     }
 
-    if (!std::getline(ss, line) || line != "REPETICION_END") {
+    if (!std::getline(ss, linea) || linea != "REPETICION_END") {
         throw std::runtime_error("Datos de repetición no válidos: falta REPETICION_END.");
     }
 }
