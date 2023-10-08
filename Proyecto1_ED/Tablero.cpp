@@ -1,5 +1,7 @@
 #include "Tablero.h"
 #include "Archivo.h"
+#include <utility>
+#include <sstream>
 
 Tablero::Tablero() : jugador(0, 0), filas(0), columnas(0) {
 	// Aquí podrías cargar un nivel por defecto o dejar el tablero vacío
@@ -77,6 +79,45 @@ bool Tablero::cargarDesdeArchivo(const std::string& nombreArchivo) {
 	return true;
 }
 
+bool Tablero::moverCaja(int filaActual, int columnaActual, int filaDeseada, int columnaDeseada) {
+	char celdaDetrasCaja = tablero.obtenerNodo(filaDeseada, columnaDeseada)->valor;
+
+	if (celdaDetrasCaja == ' ' || celdaDetrasCaja == '.') {
+		char celdaActual = tablero.obtenerNodo(filaActual, columnaActual)->valor;
+
+		// Si la caja está siendo movida a una posición objetivo
+		if (celdaDetrasCaja == '.') {
+			cajasEnObjetivo.push({ filaActual, columnaActual });
+		}
+
+		// Si la caja estaba previamente en una posición objetivo y se está moviendo fuera de ella
+		if (celdaActual == '!') {
+			if (!cajasEnObjetivo.empty() && cajasEnObjetivo.top() == std::make_pair(filaActual, columnaActual)) {
+				cajasEnObjetivo.pop();
+			}
+			else {
+				// Si la caja no está en la parte superior, buscaremos y eliminaremos manualmente
+				std::stack<std::pair<int, int>> tempStack;
+				while (!cajasEnObjetivo.empty() && cajasEnObjetivo.top() != std::make_pair(filaActual, columnaActual)) {
+					tempStack.push(cajasEnObjetivo.top());
+					cajasEnObjetivo.pop();
+				}
+				if (!cajasEnObjetivo.empty()) cajasEnObjetivo.pop(); // Eliminar la caja deseada
+				// Reinsertar los elementos de la pila temporal
+				while (!tempStack.empty()) {
+					cajasEnObjetivo.push(tempStack.top());
+					tempStack.pop();
+				}
+			}
+		}
+
+		tablero.obtenerNodo(filaDeseada, columnaDeseada)->valor = (celdaDetrasCaja == '.') ? '!' : '$';
+		tablero.obtenerNodo(filaActual, columnaActual)->valor = ' ';
+		return true;
+	}
+	return false;
+}
+
 bool Tablero::moverJugador(char direccion) {
 	int nuevaFila = jugador.getFila();
 	int nuevaColumna = jugador.getColumna();
@@ -107,12 +148,8 @@ bool Tablero::moverJugador(char direccion) {
 	else if (celdaDestino == '$' || celdaDestino == '!') {
 		int filaDetrasCaja = nuevaFila + (nuevaFila - jugador.getFila());
 		int columnaDetrasCaja = nuevaColumna + (nuevaColumna - jugador.getColumna());
-		char celdaDetrasCaja = tablero.obtenerNodo(filaDetrasCaja, columnaDetrasCaja)->valor;
 
-		if (celdaDetrasCaja == ' ' || celdaDetrasCaja == '.') {
-			// Mueve la caja
-			tablero.obtenerNodo(filaDetrasCaja, columnaDetrasCaja)->valor = (celdaDetrasCaja == '.') ? '!' : '$';
-
+		if (moverCaja(nuevaFila, nuevaColumna, filaDetrasCaja, columnaDetrasCaja)) {
 			// Mueve al jugador
 			tablero.obtenerNodo(jugador.getFila(), jugador.getColumna())->valor = jugador.getCeldaPrevia();
 			jugador.setCeldaPrevia(celdaDestino == '!' ? '.' : ' ');
@@ -132,4 +169,62 @@ bool Tablero::moverJugador(char direccion) {
 
 bool Tablero::verificarVictoria() {
 	return cajasEnObjetivo.size() == cajas.size();
+}
+
+std::string Tablero::serializar() const {
+	std::string serialized = "TABLERO_START\n";  // Identificador de inicio
+	serialized += std::to_string(filas) + "," + std::to_string(columnas) + "\n";
+	for (int fila = 0; fila < filas; ++fila) {
+		for (int columna = 0; columna < columnas; ++columna) {
+			serialized += tablero.obtenerNodo(fila, columna)->valor;
+		}
+		serialized += "\n";
+	}
+	serialized += std::to_string(jugador.getFila()) + "," + std::to_string(jugador.getColumna()) + "\n";
+	serialized += "TABLERO_END\n";  // Identificador de finalización
+	return serialized;
+}
+
+void Tablero::deserializar(const std::string& datos) {
+	std::istringstream ss(datos);
+	std::string line;
+
+	std::getline(ss, line);
+	if (line != "TABLERO_START") {
+		throw std::runtime_error("Archivo de guardado no válido.");
+	}
+
+	// Leer dimensiones
+	std::getline(ss, line);
+	std::istringstream lineSS(line);
+	std::string token;
+	std::getline(lineSS, token, ',');
+	filas = std::stoi(token);
+	std::getline(lineSS, token, ',');
+	columnas = std::stoi(token);
+
+	// Leer tablero
+	for (int fila = 0; fila < filas; ++fila) {
+		std::getline(ss, line);
+		if (line.size() != columnas) {
+			throw std::runtime_error("Formato de guardado no válido. Dimensiones incorrectas.");
+		}
+		std::vector<char> filaParaTablero(line.begin(), line.end());
+		tablero.insertarFila(filaParaTablero);
+	}
+
+	// Leer posición del jugador
+	std::getline(ss, line);
+	lineSS.str(line);
+	lineSS.clear();
+	std::getline(lineSS, token, ',');
+	int jugadorFila = std::stoi(token);
+	std::getline(lineSS, token, ',');
+	int jugadorColumna = std::stoi(token);
+	jugador.setPosicion(jugadorFila, jugadorColumna);
+
+	std::getline(ss, line);
+	if (line != "TABLERO_END") {
+		throw std::runtime_error("Archivo de guardado no válido.");
+	}
 }

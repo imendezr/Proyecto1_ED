@@ -43,10 +43,9 @@ bool Archivo::guardarEstadoJuego(const std::string& nombreArchivo, const Tablero
 		return false;
 	}
 
-	// Aquí serializarías el estado del juego. Por ejemplo:
-	// archivo << tablero.Serialize();
-	// archivo << nivelActual;
-	// archivo << repeticion.Serialize();
+	archivo << nivelActual << "\n";
+	archivo << tablero.serializar();
+	archivo << repeticion.serializar();
 
 	archivo.close();
 	return true;
@@ -58,10 +57,27 @@ bool Archivo::cargarEstadoJuego(const std::string& nombreArchivo, Tablero& table
 		return false;
 	}
 
-	// Aquí deserializarías el estado del juego. Por ejemplo:
-	// tablero.Deserialize(archivo);
-	// archivo >> nivelActual;
-	// repeticion.Deserialize(archivo);
+	// Leer nivel
+	archivo >> nivelActual;
+	archivo.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignorar el resto de la línea
+
+	// Leer contenido del archivo
+	std::string contenido((std::istreambuf_iterator<char>(archivo)), std::istreambuf_iterator<char>());
+
+	// Dividir el contenido en partes del tablero y de la repetición
+	auto tableroStart = contenido.find("TABLERO_START");
+	auto tableroEnd = contenido.find("TABLERO_END");
+
+	if (tableroStart == std::string::npos || tableroEnd == std::string::npos) {
+		throw std::runtime_error("Archivo de guardado no válido.");
+	}
+
+	// +12 para incluir "TABLERO_END\n"
+	std::string datosTablero = contenido.substr(tableroStart, tableroEnd + 12 - tableroStart);
+	std::string datosRepeticion = contenido.substr(tableroEnd + 12);  // El resto después del tablero
+
+	tablero.deserializar(datosTablero);
+	repeticion.deserializar(datosRepeticion);
 
 	archivo.close();
 	return true;

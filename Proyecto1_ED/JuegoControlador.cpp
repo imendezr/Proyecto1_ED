@@ -1,6 +1,7 @@
 #include "JuegoControlador.h"
 #include "ConsolaVista.h"
 #include <iostream>
+#include <thread>
 
 JuegoControlador::JuegoControlador() : nivelActual(1), juegoEnProgreso(false), vista(new ConsolaVista()) {
 	// Inicializar la lista de niveles
@@ -14,7 +15,7 @@ JuegoControlador::~JuegoControlador() {
 }
 
 void JuegoControlador::IniciarJuego() {
-	while (true) {  // Bucle principal del juego
+	while (true) {
 		char opcion = vista->mostrarMenu();
 
 		switch (opcion) {
@@ -26,7 +27,7 @@ void JuegoControlador::IniciarJuego() {
 			break;
 		case 'I':
 			// Las instrucciones ya fueron mostradas en la vista
-			continue;  // Continúa con la siguiente iteración del bucle para volver al menú
+			continue;
 		case 'Q':
 			exit(0);
 			break;
@@ -34,8 +35,16 @@ void JuegoControlador::IniciarJuego() {
 
 		while (juegoEnProgreso) {
 			vista->mostrarTablero(tableroActual);
-			char entrada = vista->solicitarEntrada("Mueve con las flechas o Q para salir: ");
+			char entrada = vista->solicitarEntrada("Presiona Z para reiniciar el nivel, G para guardar la partida o Q para salir: ");
 			switch (entrada) {
+			case 'G':
+			case 'g':
+				GuardarJuego();
+				break;
+			case 'Z':
+			case 'z':
+				ReiniciarNivel();
+				break;
 			case 'Q':
 			case 'q':
 				juegoEnProgreso = false;
@@ -44,6 +53,7 @@ void JuegoControlador::IniciarJuego() {
 				ManejarEntrada(entrada);
 				break;
 			}
+
 		}
 	}
 }
@@ -70,6 +80,7 @@ void JuegoControlador::GuardarJuego() {
 bool JuegoControlador::CargarJuego() {
 	if (Archivo::cargarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
 		vista->mostrarMensaje("Juego cargado con éxito.");
+		juegoEnProgreso = true; // Reanudar juego
 		return true;
 	}
 	else {
@@ -101,7 +112,17 @@ void JuegoControlador::ManejarEntrada(char entrada) {
 
 	if (movimientoValido) {
 		repeticion.registrarMovimiento(entrada); // Registrar el movimiento en Repeticion
+		if (tableroActual.verificarVictoria()) {
+			nivelCompletado();
+		}
 	}
+}
+
+void JuegoControlador::nivelCompletado() {
+	vista->mostrarMensaje("¡Nivel completado!");
+	// Puedes agregar un pequeño delay aquí para que el jugador pueda ver el mensaje
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	AvanzarAlSiguienteNivel();
 }
 
 void JuegoControlador::ReiniciarNivel() {
@@ -111,12 +132,13 @@ void JuegoControlador::ReiniciarNivel() {
 void JuegoControlador::MostrarRepeticion() {
 	const auto& movimientos = repeticion.obtenerMovimientos();
 
-	// Cargamos el nivel inicial para comenzar la repetición desde el inicio
+	// Se carga el nivel de nuevo para comenzar la repetición desde el inicio
 	CargarNivel(nivelActual);
 
 	for (char movimiento : movimientos) {
 		tableroActual.moverJugador(movimiento);
-		vista->mostrarTablero(tableroActual); // Mostrar el tablero después de cada movimiento
+		vista->mostrarTablero(tableroActual);
+		std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Delay de medio segundo entre movimientos
 	}
 }
 

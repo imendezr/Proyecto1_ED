@@ -24,6 +24,7 @@ private:
 	bool CargarJuego();
 	void mostrarInstrucciones();
 	void ManejarEntrada(char entrada);
+	void nivelCompletado();
 	void ReiniciarNivel();
 	void MostrarRepeticion();
 	void AvanzarAlSiguienteNivel();

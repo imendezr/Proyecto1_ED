@@ -1,3 +1,4 @@
+#include "ListaEnlazada.h"
 // Implementación de Nodo
 template<class T>
 struct ListaEnlazada<T>::Nodo {
@@ -136,6 +137,29 @@ typename ListaEnlazada<T>::listaptr ListaEnlazada<T>::obtenerNodo(int fila, int 
 	if (fila < 0 || columna < 0 || fila >= ListaEnlazada<T>::filas || columna >= ListaEnlazada<T>::columnas) return nullptr;  // Si la lista está vacía
 
 	typename ListaEnlazada<T>::listaptr nodoActual = ListaEnlazada<T>::inicio;
+
+	// Moverse a la fila correcta
+	for (int i = 0; i < fila; i++) {
+		nodoActual = nodoActual->down;
+		if (!nodoActual) return nullptr;  // Verifica que el nodo actual no sea nullptr
+	}
+
+	// Moverse a la columna correcta
+	for (int j = 0; j < columna; j++) {
+		nodoActual = nodoActual->right;
+		if (!nodoActual) return nullptr;  // Verifica que el nodo actual no sea nullptr
+	}
+
+	return nodoActual;
+}
+
+// Retorna un nodo por posición - const
+template<class T>
+inline typename ListaEnlazada<T>::const_listaptr ListaEnlazada<T>::obtenerNodo(int fila, int  columna) const
+{
+	if (fila < 0 || columna < 0 || fila >= ListaEnlazada<T>::filas || columna >= ListaEnlazada<T>::columnas) return nullptr;  // Si la lista está vacía
+
+	typename ListaEnlazada<T>::const_listaptr nodoActual = ListaEnlazada<T>::inicio;
 
 	// Moverse a la fila correcta
 	for (int i = 0; i < fila; i++) {

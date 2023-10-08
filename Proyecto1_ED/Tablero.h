@@ -15,7 +15,8 @@ private:
 	ListaEnlazada<char> tablero;
 	Jugador jugador;
 	std::vector<Caja> cajas;
-	std::stack<Caja> cajasEnObjetivo;
+	//std::stack<Caja> cajasEnObjetivo;
+	std::stack<std::pair<int, int>> cajasEnObjetivo;
 	int filas, columnas;
 
 	bool esPosicionValida(int, int);
@@ -29,8 +30,13 @@ public:
 	int getColumnas() const;
 
 	bool cargarDesdeArchivo(const std::string&);
+	bool moverCaja(int, int, int, int);
 	bool moverJugador(char); // 'U' para arriba (up), 'D' para abajo (down), 'L' para la izquierda (left), 'R' para la derecha (right)
 	bool verificarVictoria();
+
+	std::string serializar() const;
+	void deserializar(const std::string&);
+
 };
 
 #endif
