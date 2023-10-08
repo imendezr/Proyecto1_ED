@@ -24,6 +24,12 @@ bool Tablero::puedeMoverseA(int fila, int columna) {
 }
 
 bool Tablero::cargarDesdeArchivo(const std::string& nombreArchivo) {
+	// Limpieza antes de cargar
+	tablero.borrarLista();
+	cajas.clear();
+	jugador.setPosicion(0, 0);
+	jugador.setCeldaPrevia(' ');
+
 	auto contenido = Archivo::leerArchivo(nombreArchivo);
 
 	if (contenido.empty()) {
@@ -208,6 +214,13 @@ std::string Tablero::serializar() const {
 		serializado += "\n";
 	}
 	serializado += std::to_string(jugador.getFila()) + "," + std::to_string(jugador.getColumna()) + "\n";
+
+	// Serializando las cajas:
+	serializado += std::to_string(cajas.size()) + "\n";  // número de cajas
+	for (const Caja& caja : cajas) {
+		serializado += std::to_string(caja.getFila()) + "," + std::to_string(caja.getColumna()) + "\n";
+	}
+
 	serializado += "TABLERO_END\n";  // Identificador de finalización
 	return serializado;
 }
@@ -249,6 +262,22 @@ void Tablero::deserializar(const std::string& datos) {
 	std::getline(lineSS, token, ',');
 	int jugadorColumna = std::stoi(token);
 	jugador.setPosicion(jugadorFila, jugadorColumna);
+
+	// Leer cajas
+	cajas.clear();
+	std::getline(ss, linea);
+	int numCajas = std::stoi(linea);
+	for (int i = 0; i < numCajas; ++i) {
+		std::getline(ss, linea);
+		lineSS.str(linea);
+		lineSS.clear();
+		std::getline(lineSS, token, ',');
+		int cajaFila = std::stoi(token);
+		std::getline(lineSS, token, ',');
+		int cajaColumna = std::stoi(token);
+		Caja caja(cajaFila, cajaColumna);
+		cajas.push_back(caja);
+	}
 
 	std::getline(ss, linea);
 	if (linea != "TABLERO_END") {

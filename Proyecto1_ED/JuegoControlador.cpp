@@ -80,6 +80,9 @@ void JuegoControlador::guardarJuego() {
 }
 
 bool JuegoControlador::cargarJuego() {
+	// Limpiar o reinicializar cualquier estado anterior aquí
+	tableroActual = Tablero(); // Reiniciar el tablero a su estado inicial
+
 	if (Archivo::cargarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
 		vista->mostrarMensaje("Juego cargado con éxito.");
 		juegoEnProgreso = true; // Reanudar juego
