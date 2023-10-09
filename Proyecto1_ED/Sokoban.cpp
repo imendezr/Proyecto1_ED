@@ -3,9 +3,6 @@
 #include <iostream>
 #include <vector>
 
-template <typename T>
-void Mostrar(const T&);
-
 int main() {
 	JuegoControlador controlador;
 	controlador.iniciarJuego();

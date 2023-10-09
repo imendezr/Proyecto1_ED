@@ -111,8 +111,7 @@ char ConsolaVista::mostrarMenu() {
 
 void ConsolaVista::mostrarInstrucciones() {
 	system("cls");
-	mostrarMensaje(R"(
-Instrucciones del juego:
+	mostrarMensaje(R"(Instrucciones del juego:
 
 1. Mueve al jugador con las flechas de direccion o las teclas W A S D.
 2. Posiciona las cajas en los espacios respectivos.

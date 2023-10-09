@@ -134,31 +134,49 @@ void JuegoControlador::manejarEntrada(char entrada) {
 }
 
 void JuegoControlador::nivelCompletado() {
-	esperandoRespuesta = true;
-	vista->mostrarMensaje("Nivel completado!");
+	if (nivelActual == niveles.size()) {
+		// Si el nivel actual es el último
+		system("cls");
+		vista->mostrarMensaje(R"(Felicidades! Has completado todos los niveles.
 
-	char entrada;
-	do {
-		entrada = vista->solicitarEntrada("Presiona V para ver la repetición o C para continuar al siguiente nivel: ");
-	} while (entrada != 'V' && entrada != 'v' && entrada != 'C' && entrada != 'c');
-
-	switch (entrada) {
-	case 'V':
-	case 'v':
-		mostrarRepeticion();
-		// Luego de ver la repetición, limpiamos los movimientos
-		repeticion.limpiarMovimientos();
-		// Luego de ver la repetición, se le da la opción de continuar al siguiente nivel.
-		vista->solicitarEntrada("Presiona C para continuar al siguiente nivel: ");
-		avanzarAlSiguienteNivel();
-		break;
-	case 'C':
-	case 'c':
-		avanzarAlSiguienteNivel();
-		break;
+Presiona Enter para volver al menu principal...)");
+		// Esperar hasta que el usuario presione Enter
+		while (true) {
+			char entrada = _getch();
+			if (entrada == '\r') {
+				system("cls");
+				break;
+			}
+		}
+		juegoEnProgreso = false;
 	}
+	else {
+		esperandoRespuesta = true;
+		vista->mostrarMensaje("\nNivel completado!");
 
-	esperandoRespuesta = false;
+		char entrada;
+		do {
+			entrada = vista->solicitarEntrada("Presiona V para ver la repetición o C para continuar al siguiente nivel: ");
+		} while (entrada != 'V' && entrada != 'v' && entrada != 'C' && entrada != 'c');
+
+		switch (entrada) {
+		case 'V':
+		case 'v':
+			mostrarRepeticion();
+			// Luego de ver la repetición, limpiamos los movimientos
+			repeticion.limpiarMovimientos();
+			// Luego de ver la repetición, se le da la opción de continuar al siguiente nivel.
+			vista->solicitarEntrada("Presiona C para continuar al siguiente nivel: ");
+			avanzarAlSiguienteNivel();
+			break;
+		case 'C':
+		case 'c':
+			avanzarAlSiguienteNivel();
+			break;
+		}
+
+		esperandoRespuesta = false;
+	}
 }
 
 void JuegoControlador::reiniciarNivel() {
@@ -187,7 +205,9 @@ void JuegoControlador::avanzarAlSiguienteNivel() {
 	}
 	else {
 		system("cls");
-		vista->mostrarMensaje("Felicidades! Has completado todos los niveles.");
+		vista->mostrarMensaje(R"(Felicidades! Has completado todos los niveles.
+
+Presiona Enter para volver al menu principal...)");
 		// Esperar hasta que el usuario presione Enter
 		while (true) {
 			char entrada = _getch();
