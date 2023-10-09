@@ -2,6 +2,7 @@
 #include "ConsolaVista.h"
 #include <iostream>
 #include <thread>
+#include <conio.h>
 
 JuegoControlador::JuegoControlador() : nivelActual(1), juegoEnProgreso(false), esperandoRespuesta(false), vista(new ConsolaVista()) {
 	// Inicializar la lista de niveles
@@ -35,7 +36,11 @@ void JuegoControlador::iniciarJuego() {
 
 		while (juegoEnProgreso) {
 			vista->mostrarTablero(tableroActual);
-			char entrada = vista->solicitarEntrada("Presiona Z para reiniciar el nivel, G para guardar la partida o Q para salir: ");
+			char entrada = vista->solicitarEntrada(R"(
+Presiona:
+Z para reiniciar el nivel
+G para guardar la partida
+Q para salir)");
 			if (esperandoRespuesta) {
 				continue; // Si estamos esperando una respuesta, no procesamos la entrada y volvemos al inicio del loop
 			}
@@ -181,7 +186,16 @@ void JuegoControlador::avanzarAlSiguienteNivel() {
 		repeticion.limpiarMovimientos();  // Limpiamos la repetición después de cargar el nivel
 	}
 	else {
+		system("cls");
 		vista->mostrarMensaje("Felicidades! Has completado todos los niveles.");
+		// Esperar hasta que el usuario presione Enter
+		while (true) {
+			char entrada = _getch();
+			if (entrada == '\r') {
+				system("cls");
+				break;
+			}
+		}
 		juegoEnProgreso = false;
 	}
 }

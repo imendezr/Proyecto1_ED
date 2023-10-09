@@ -83,12 +83,12 @@ char ConsolaVista::solicitarEntrada(const std::string& mensaje) {
 char ConsolaVista::mostrarMenu() {
 	while (true) {
 		system("cls");
-		mostrarMensaje("----- Menu de Sokoban -----");
+		mostrarMensaje("----- Menu de Sokoban -----\n");
 		mostrarMensaje("1. Iniciar nuevo juego");
 		mostrarMensaje("2. Cargar juego guardado");
 		mostrarMensaje("3. Ver instrucciones");
 		mostrarMensaje("4. Salir");
-		char entrada = solicitarEntrada("Ingrese su opcion: ");
+		char entrada = solicitarEntrada("\nIngrese su opcion: ");
 		switch (entrada) {
 		case '1':
 			return 'N';
@@ -112,16 +112,16 @@ char ConsolaVista::mostrarMenu() {
 void ConsolaVista::mostrarInstrucciones() {
 	system("cls");
 	mostrarMensaje(R"(
-        Instrucciones del juego:
+Instrucciones del juego:
 
-        1. Mueve al jugador con las flechas de dirección o las teclas W A S D.
-        2. Posiciona las cajas en los espacios respectivos.
-        3. Si completas los 3 niveles se gana una birra.
+1. Mueve al jugador con las flechas de direccion o las teclas W A S D.
+2. Posiciona las cajas en los espacios respectivos.
+3. Si completas los 3 niveles se gana una birra.
 
-        Buena suerte para completar los niveles sin un tutorial!
+Buena suerte para completar los niveles sin un tutorial!
 
-        Presiona Enter para volver al menu principal...
-    )");
+Presiona Enter para volver al menu principal...
+)");
 
 	// Esperar hasta que el usuario presione Enter
 	while (true) {
