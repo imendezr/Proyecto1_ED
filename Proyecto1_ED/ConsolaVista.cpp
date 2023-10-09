@@ -82,12 +82,13 @@ char ConsolaVista::solicitarEntrada(const std::string& mensaje) {
 
 char ConsolaVista::mostrarMenu() {
 	while (true) {
+		system("cls");
 		mostrarMensaje("----- Menu de Sokoban -----");
 		mostrarMensaje("1. Iniciar nuevo juego");
 		mostrarMensaje("2. Cargar juego guardado");
 		mostrarMensaje("3. Ver instrucciones");
 		mostrarMensaje("4. Salir");
-		char entrada = solicitarEntrada("Ingrese su opcion:");
+		char entrada = solicitarEntrada("Ingrese su opcion: ");
 		switch (entrada) {
 		case '1':
 			return 'N';
@@ -98,6 +99,7 @@ char ConsolaVista::mostrarMenu() {
 			break;
 			//return 'I';
 		case '4':
+			system("cls");
 			mostrarMensaje("Gracias por jugar Sokoban. Hasta pronto!");
 			return 'Q';
 		default:
@@ -108,13 +110,25 @@ char ConsolaVista::mostrarMenu() {
 }
 
 void ConsolaVista::mostrarInstrucciones() {
+	system("cls");
 	mostrarMensaje(R"(
         Instrucciones del juego:
 
-        1. Mueve al jugador con las flechas de direccion o las teclas W A S D.
+        1. Mueve al jugador con las flechas de dirección o las teclas W A S D.
         2. Posiciona las cajas en los espacios respectivos.
         3. Si completas los 3 niveles se gana una birra.
 
         Buena suerte para completar los niveles sin un tutorial!
+
+        Presiona Enter para volver al menu principal...
     )");
+
+	// Esperar hasta que el usuario presione Enter
+	while (true) {
+		char entrada = _getch();
+		if (entrada == '\r') {
+			system("cls");
+			break;
+		}
+	}
 }

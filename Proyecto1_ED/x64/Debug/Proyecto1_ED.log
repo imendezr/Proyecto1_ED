@@ -1,20 +1,2 @@
-﻿  Archivo.cpp
-  Caja.cpp
-  ConsolaVista.cpp
-  JuegoControlador.cpp
-  Jugador.cpp
-  Sokoban.cpp
-  Repeticion.cpp
-  Tablero.cpp
-C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\Tablero.cpp(48,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\Tablero.cpp(94,24): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\ListaEnlazada.hpp(192,26): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\ListaEnlazada.hpp(154,68): message : while compiling class template member function 'void ListaEnlazada<char>::insertarFila(const std::vector<T,std::allocator<char>> &)'
-          with
-          [
-              T=char
-          ]
-C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\Tablero.cpp(86,23): message : see the first reference to 'ListaEnlazada<char>::insertarFila' in 'Tablero::cargarDesdeArchivo'
-C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\Tablero.h(15,22): message : see reference to class template instantiation 'ListaEnlazada<char>' being compiled
-  Generating Code...
+﻿  ConsolaVista.cpp
   Proyecto1_ED.vcxproj -> C:\Users\ISAAC\Desktop\Proyecto1_ED\x64\Debug\Proyecto1_ED.exe
