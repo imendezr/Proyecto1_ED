@@ -64,6 +64,7 @@ void JuegoControlador::cargarNivel(int nivel) {
 	if (nivel <= niveles.size() && tableroActual.cargarDesdeArchivo(niveles[nivel - 1])) {
 		nivelActual = nivel;
 		juegoEnProgreso = true;
+		repeticion.limpiarMovimientos();  // Limpiamos la repetición
 	}
 	else {
 		vista->mostrarMensaje("Error al cargar el nivel.");
@@ -71,6 +72,11 @@ void JuegoControlador::cargarNivel(int nivel) {
 }
 
 void JuegoControlador::guardarJuego() {
+	// Si el jugador ha completado el nivel, limpiamos la repetición antes de guardar.
+	if (tableroActual.verificarVictoria()) {
+		repeticion.limpiarMovimientos();
+	}
+
 	if (Archivo::guardarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
 		vista->mostrarMensaje("Juego guardado con éxito.");
 	}
@@ -139,6 +145,8 @@ void JuegoControlador::nivelCompletado() {
 	case 'V':
 	case 'v':
 		mostrarRepeticion();
+		// Luego de ver la repetición, limpiamos los movimientos
+		repeticion.limpiarMovimientos();
 		// Luego de ver la repetición, se le da la opción de continuar al siguiente nivel.
 		vista->solicitarEntrada("Presiona C para continuar al siguiente nivel: ");
 		avanzarAlSiguienteNivel();
@@ -154,17 +162,19 @@ void JuegoControlador::nivelCompletado() {
 
 void JuegoControlador::reiniciarNivel() {
 	cargarNivel(nivelActual);
+	repeticion.limpiarMovimientos();  // Limpiamos la repetición
 }
 
 void JuegoControlador::mostrarRepeticion() {
 	const auto& movimientos = repeticion.obtenerMovimientos();
 
-	// Se carga el nivel de nuevo para comenzar la repetición desde el inicio
-	cargarNivel(nivelActual);
+	// Se resetea el tablero al estado inicial del nivel actual
+	Tablero tableroTemporal;
+	tableroTemporal.cargarDesdeArchivo(niveles[nivelActual - 1]);
 
 	for (char movimiento : movimientos) {
-		tableroActual.moverJugador(movimiento);
-		vista->mostrarTablero(tableroActual);
+		tableroTemporal.moverJugador(movimiento);
+		vista->mostrarTablero(tableroTemporal);
 		std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Delay de medio segundo entre movimientos
 	}
 }
@@ -172,6 +182,7 @@ void JuegoControlador::mostrarRepeticion() {
 void JuegoControlador::avanzarAlSiguienteNivel() {
 	if (nivelActual < niveles.size()) {
 		cargarNivel(nivelActual + 1);
+		repeticion.limpiarMovimientos();  // Limpiamos la repetición después de cargar el nivel
 	}
 	else {
 		vista->mostrarMensaje("¡Felicidades! Has completado todos los niveles.");
