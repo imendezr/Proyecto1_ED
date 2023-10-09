@@ -82,6 +82,3 @@ bool Archivo::cargarEstadoJuego(const std::string& nombreArchivo, Tablero& table
 	archivo.close();
 	return true;
 }
-
-/* Expandir esta clase con funciones adicionales como por ejemplo:
-guardar y cargar el estado del juego(posición del jugador, estado de las cajas, nivel actual, etc.) */

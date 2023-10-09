@@ -28,15 +28,12 @@ public:
     const_listaptr getPrimerNodo() const;
     int getFilas() const;
     int getColumnas() const;
-    //bool esAdyacente(listaptr, listaptr);
-    //std::vector<listaptr> buscarCeldasConValor(const T&);
     listaptr obtenerNodo(int, int);
     const_listaptr obtenerNodo(int, int) const;
     void insertarFila(const std::vector<T>&);
     void insertarColumna(const std::vector<T>&);
     void eliminarFila(int);
     void eliminarColumna(int);
-    //void imprimir();
     void borrarLista();
 };
 

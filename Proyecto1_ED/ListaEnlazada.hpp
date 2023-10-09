@@ -104,33 +104,6 @@ int ListaEnlazada<T>::getColumnas() const {
 	return columnas;
 }
 
-/*// Verifica si un nodo es contiguo a otro en cualquier dirección
-template<class T>
-bool ListaEnlazada<T>::esAdyacente(listaptr nodo1, listaptr nodo2) {
-	if (!nodo1 || !nodo2) return false;
-
-	return (nodo1->right == nodo2 || nodo1->left == nodo2 ||
-		nodo1->up == nodo2 || nodo1->down == nodo2);
-}
-
-// Encuentra todos los nodos con un mismo valor
-template<class T>
-std::vector<typename ListaEnlazada<T>::listaptr> ListaEnlazada<T>::buscarCeldasConValor(const T& valorBuscado) {
-	std::vector<listaptr> nodosEncontrados;
-	listaptr filaActual = inicio;
-	while (filaActual) {
-		listaptr nodoActual = filaActual;
-		while (nodoActual) {
-			if (nodoActual->valor == valorBuscado) {
-				nodosEncontrados.push_back(nodoActual);
-			}
-			nodoActual = nodoActual->right;
-		}
-		filaActual = filaActual->down;
-	}
-	return nodosEncontrados;
-}*/
-
 // Retorna un nodo por posición
 template<class T>
 typename ListaEnlazada<T>::listaptr ListaEnlazada<T>::obtenerNodo(int fila, int columna) {
@@ -355,21 +328,6 @@ void ListaEnlazada<T>::eliminarColumna(int posicion) {
 	// Actualizar conteo de columnas
 	columnas--;
 }
-
-/*// Imprime el contenido de la lista
-template<class T>
-void ListaEnlazada<T>::imprimir() {
-	listaptr filaActual = inicio;
-	while (filaActual) {
-		listaptr nodoActual = filaActual;
-		while (nodoActual) {
-			std::cout << nodoActual->valor << "\t"; // Tabulación entre columnas
-			nodoActual = nodoActual->right;
-		}
-		std::cout << std::endl; // Al final de cada fila
-		filaActual = filaActual->down;
-	}
-}*/
 
 // Borra completamente la lista
 template<class T>

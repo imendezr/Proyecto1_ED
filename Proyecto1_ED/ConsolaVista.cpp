@@ -4,9 +4,7 @@
 #include <wincon.h>
 #include <conio.h>
 
-ConsolaVista::ConsolaVista() {
-	// Constructor si es necesario
-}
+ConsolaVista::ConsolaVista() {}
 
 void ConsolaVista::mostrarTablero(const Tablero& tablero) {
 	system("cls");  // Limpia la consola
@@ -84,12 +82,12 @@ char ConsolaVista::solicitarEntrada(const std::string& mensaje) {
 
 char ConsolaVista::mostrarMenu() {
 	while (true) {
-		mostrarMensaje("----- Menú de Sokoban -----");
+		mostrarMensaje("----- Menu de Sokoban -----");
 		mostrarMensaje("1. Iniciar nuevo juego");
 		mostrarMensaje("2. Cargar juego guardado");
 		mostrarMensaje("3. Ver instrucciones");
 		mostrarMensaje("4. Salir");
-		char entrada = solicitarEntrada("Ingrese su opción:");
+		char entrada = solicitarEntrada("Ingrese su opcion:");
 		switch (entrada) {
 		case '1':
 			return 'N';
@@ -100,15 +98,23 @@ char ConsolaVista::mostrarMenu() {
 			break;
 			//return 'I';
 		case '4':
-			mostrarMensaje("Gracias por jugar Sokoban. ¡Hasta pronto!");
+			mostrarMensaje("Gracias por jugar Sokoban. Hasta pronto!");
 			return 'Q';
 		default:
-			mostrarMensaje("Opción no válida. Por favor, intente de nuevo.");
+			mostrarMensaje("Opcion no valida. Por favor, intente de nuevo.");
 			break;
 		}
 	}
 }
 
 void ConsolaVista::mostrarInstrucciones() {
-	mostrarMensaje("Instrucciones del juego ...");
+	mostrarMensaje(R"(
+        Instrucciones del juego:
+
+        1. Mueve al jugador con las flechas de direccion o las teclas W A S D.
+        2. Posiciona las cajas en los espacios respectivos.
+        3. Si completas los 3 niveles se gana una birra.
+
+        Buena suerte para completar los niveles sin un tutorial!
+    )");
 }

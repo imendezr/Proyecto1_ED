@@ -78,7 +78,7 @@ void JuegoControlador::guardarJuego() {
 	}
 
 	if (Archivo::guardarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
-		vista->mostrarMensaje("Juego guardado con éxito.");
+		vista->mostrarMensaje("Juego guardado con exito.");
 	}
 	else {
 		vista->mostrarMensaje("Error al guardar el juego.");
@@ -90,7 +90,7 @@ bool JuegoControlador::cargarJuego() {
 	tableroActual = Tablero(); // Reiniciar el tablero a su estado inicial
 
 	if (Archivo::cargarEstadoJuego("savegame.txt", tableroActual, nivelActual, repeticion)) {
-		vista->mostrarMensaje("Juego cargado con éxito.");
+		vista->mostrarMensaje("Juego cargado con exito.");
 		juegoEnProgreso = true; // Reanudar juego
 		return true;
 	}
@@ -98,10 +98,6 @@ bool JuegoControlador::cargarJuego() {
 		vista->mostrarMensaje("Error al cargar el juego.");
 		return false;
 	}
-}
-
-void JuegoControlador::mostrarInstrucciones() {
-	vista->mostrarMensaje("Instrucciones del juego ...");
 }
 
 void JuegoControlador::manejarEntrada(char entrada) {
@@ -134,7 +130,7 @@ void JuegoControlador::manejarEntrada(char entrada) {
 
 void JuegoControlador::nivelCompletado() {
 	esperandoRespuesta = true;
-	vista->mostrarMensaje("¡Nivel completado!");
+	vista->mostrarMensaje("Nivel completado!");
 
 	char entrada;
 	do {
@@ -185,7 +181,7 @@ void JuegoControlador::avanzarAlSiguienteNivel() {
 		repeticion.limpiarMovimientos();  // Limpiamos la repetición después de cargar el nivel
 	}
 	else {
-		vista->mostrarMensaje("¡Felicidades! Has completado todos los niveles.");
+		vista->mostrarMensaje("Felicidades! Has completado todos los niveles.");
 		juegoEnProgreso = false;
 	}
 }

@@ -15,7 +15,6 @@ private:
 	ListaEnlazada<char> tablero;
 	Jugador jugador;
 	std::vector<Caja> cajas;
-	//std::stack<Caja> cajasEnObjetivo;
 	std::stack<std::pair<int, int>> cajasEnObjetivo;
 	int filas, columnas;
 
