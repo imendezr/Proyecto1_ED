@@ -1,4 +1,11 @@
-﻿  Tablero.cpp
+﻿  Archivo.cpp
+  Caja.cpp
+  ConsolaVista.cpp
+  JuegoControlador.cpp
+  Jugador.cpp
+  Repeticion.cpp
+  Sokoban.cpp
+  Tablero.cpp
 C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\Tablero.cpp(48,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\Tablero.cpp(94,24): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\ListaEnlazada.hpp(219,26): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
@@ -9,4 +16,6 @@ C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\ListaEnlazada.hpp(181,68): mess
           ]
 C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\Tablero.cpp(86,23): message : see the first reference to 'ListaEnlazada<char>::insertarFila' in 'Tablero::cargarDesdeArchivo'
 C:\Users\ISAAC\Desktop\Proyecto1_ED\Proyecto1_ED\Tablero.h(15,22): message : see reference to class template instantiation 'ListaEnlazada<char>' being compiled
+  Generating Code...
+  LINK : C:\Users\ISAAC\Desktop\Proyecto1_ED\x64\Debug\Proyecto1_ED.exe not found or not built by the last incremental link; performing full link
   Proyecto1_ED.vcxproj -> C:\Users\ISAAC\Desktop\Proyecto1_ED\x64\Debug\Proyecto1_ED.exe

@@ -4,7 +4,7 @@
 #include <sstream>
 
 Tablero::Tablero() : jugador(0, 0), filas(0), columnas(0) {
-	// Aquí podrías cargar un nivel por defecto o dejar el tablero vacío
+	// Se podría cargar un nivel por defecto o dejar el tablero vacío
 }
 
 ListaEnlazada<char> Tablero::getTablero() const { return tablero; }
